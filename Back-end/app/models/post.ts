@@ -1,6 +1,8 @@
 import { PostSchema } from '#database/schema'
 import { DateTime } from 'luxon'
-import { column } from '@adonisjs/lucid/orm'
+import { belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import User from '#models/user'
 
 export default class Post extends PostSchema {
   @column({ isPrimary: true })
@@ -22,4 +24,6 @@ export default class Post extends PostSchema {
   declare updatedAt: DateTime | null
 
   /*relations*/
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 }
