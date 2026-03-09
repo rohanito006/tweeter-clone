@@ -13,7 +13,7 @@ export const signupValidator = vine.create({
   fullName: vine.string().nullable(),
   email: email().unique({ table: 'users', column: 'email' }),
   password: password(),
-  passwordConfirmation: password().sameAs('password'),
+  passwordConfirmation: vine.string().confirmed({ confirmationField: 'password' }),
 })
 
 /**
@@ -22,5 +22,5 @@ export const signupValidator = vine.create({
  */
 export const loginValidator = vine.create({
   email: email(),
-  password: vine.string(),
+  password: password(),
 })

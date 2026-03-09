@@ -32,17 +32,42 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare expiresAt: DateTime | null
 }
 
+export class PostSchema extends BaseModel {
+  static $columns = ['id', 'userId', 'title', 'content', 'createdAt', 'updatedAt'] as const
+  $columns = PostSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare userId: number | null
+  @column()
+  declare title: string
+  @column()
+  declare content: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class UserSchema extends BaseModel {
-  static $columns = ['id', 'fullName', 'email', 'password', 'createdAt', 'updatedAt'] as const
+  static $columns = ['id', 'fullname', 'username', 'bio', 'email', 'password', 'location', 'photoProfil', 'createdAt', 'updatedAt'] as const
   $columns = UserSchema.$columns
   @column({ isPrimary: true })
   declare id: number
   @column()
-  declare fullName: string | null
+  declare fullname: string | null
+  @column()
+  declare username: string | null
+  @column()
+  declare bio: string | null
   @column()
   declare email: string
   @column({ serializeAs: null })
   declare password: string
+  @column()
+  declare location: string | null
+  @column()
+  declare photoProfil: string | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column.dateTime({ autoCreate: true, autoUpdate: true })
