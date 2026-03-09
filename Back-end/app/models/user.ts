@@ -5,6 +5,9 @@ import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { type AccessToken, DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import { DateTime } from 'luxon'
 import { column } from '@adonisjs/lucid/orm'
+import { hasMany } from '@adonisjs/lucid/orm'
+import Post from './post.ts'
+import type { HasMany } from '@adonisjs/lucid/types/relations'
 
 export default class User extends compose(BaseModel, withAuthFinder(hash)) {
   static accessTokens = DbAccessTokensProvider.forModel(User)
@@ -49,4 +52,6 @@ export default class User extends compose(BaseModel, withAuthFinder(hash)) {
   }
 
   /*relations*/
+  @hasMany(() => Post)
+  declare posts: HasMany<typeof Post>
 }
