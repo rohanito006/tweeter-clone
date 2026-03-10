@@ -1,4 +1,4 @@
-import { BaseModel } from '@adonisjs/lucid/orm'
+import { BaseModel, manyToMany } from '@adonisjs/lucid/orm'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
@@ -6,9 +6,8 @@ import { type AccessToken, DbAccessTokensProvider } from '@adonisjs/auth/access_
 import { DateTime } from 'luxon'
 import { column } from '@adonisjs/lucid/orm'
 import { hasMany } from '@adonisjs/lucid/orm'
-import Post from './post.ts'
-import type { HasMany } from '@adonisjs/lucid/types/relations'
-
+import Post from '#models/post'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 export default class User extends compose(BaseModel, withAuthFinder(hash)) {
   static accessTokens = DbAccessTokensProvider.forModel(User)
   declare currentAccessToken?: AccessToken
@@ -53,5 +52,12 @@ export default class User extends compose(BaseModel, withAuthFinder(hash)) {
 
   /*relations*/
   @hasMany(() => Post)
-  declare posts: HasMany<typeof Post>
+  declare posts: HasMany<typeof Post> // Un utilisateur peut avoir plusieurs posts
+
+  @manyToMany(() => Post, {
+    pivotTable: 'user_likes',
+    pivotForeignKey: 'user_id',
+    pivotRelatedForeignKey: 'post_id',
+  })
+  declare likedPosts: ManyToMany<typeof Post> // Un utilisateur peut aimer plusieurs posts
 }
